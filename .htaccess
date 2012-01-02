@@ -1,0 +1,70 @@
+####################################################
+# [BEGIN] Multi-Environment HTTP Authentication
+####################################################
+# SetEnvIf Host "^dev.website.com" development
+# Order Allow,Deny
+# 
+# AuthName "Development Server"
+# AuthType Basic
+# AuthUserFile /home/sq1agenc/website/.htpasswd
+# Require valid-user
+# 
+# Allow from all
+# Deny from env=development
+# Satisfy any
+#--------------------------------------------------#
+
+####################################################
+# [BEGIN] compress text, html, javascript, css, xml
+####################################################
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+#--------------------------------------------------#
+
+####################################################
+# [BEGIN] Main URL Rewrites
+####################################################
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteBase /
+	ErrorDocument 404 /404/
+
+	# Prevent directory listing
+	Options -Indexes
+
+	# lose the 'www'
+	RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+	RewriteRule ^(.*)$ http://%1/$1 [R=301,NC,L]
+	
+	# restrict access to .git files/directories
+	RedirectMatch 403 /\.git.*$
+
+	# The following section automatically adds a trailing slash to all URLs
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+	RewriteCond %{HTTP:X-REQUESTED-WITH} !^(XMLHttpRequest)$
+	RewriteCond %{REQUEST_METHOD} !^HEAD$ 
+	RewriteCond %{REQUEST_METHOD} !^POST$ 
+	RewriteRule (.*)([^/])$ %{REQUEST_URI}/ [R=301,NC,L]
+	
+	# hide index.php and index.html from urls
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)index.(html|php)$ $1 [R,NC,L]
+    
+	#------------------------------- main rewrite to routing controller ------------------------------#
+	# Redirect everything through index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ /index.php?req=$1 [NC,L]
+	#-------------------------------------------------------------------------------------------------#
+</IfModule>
+#--------------------------------------------------#
