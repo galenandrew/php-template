@@ -1,0 +1,13 @@
+# -------------------- system generated files
+.DS_Store
+Thumbs.db
+
+# -------------------- Custom Ignored Files
+*.ignore
+
+# -------------------- Capistrano Files
+config/deploy*
+Capfile
+
+# -------------------- Files to Ignore
+blog/wp-content/uploads*
