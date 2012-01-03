@@ -21,7 +21,6 @@ define('ERROR_404_PAGE',		PAGES.'error_404.php');
 define('ERROR_DB_CONTROLLER',	CONTROLLERS.'error_db.php');
 define('ERROR_DB_PAGE',			PAGES.'error_db.php');
 //---> Other
-define('CSS_BOOTSTRAP', 		TRUE);
 define('DB_REQUIRED', 			FALSE);
 define('DBUG', 					FALSE);
 define('BASE_URL',				$_SERVER['HTTP_HOST']);
