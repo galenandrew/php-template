@@ -14,10 +14,9 @@
 <meta name="description" content="<?php echo !isset($meta['description']) ? '' : $meta['description']; ?>">
 
 <!-- stylesheets -->
+<link href="/styles/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- <link href="/styles/main.css" rel="stylesheet" type="text/css" media="all" /> -->
 <?php
-//---> Default Stylesheet
-echo '<link href="/styles/'.( defined('CSS_BOOTSTRAP') && CSS_BOOTSTRAP ? 'bootstrap' : 'main' ).'.css" rel="stylesheet" type="text/css" media="all" />';
-
 //---> Stylesheets
 if(isset($data['styles']) && is_array($data['styles'])) 
 {

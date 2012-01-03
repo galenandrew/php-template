@@ -4,7 +4,6 @@
  *	PAGE - Home
  * ------------------------------------------------------------ *
  */
-define('IS_HOME', TRUE);
 
 //---> Define Template Data
 $meta = array(
