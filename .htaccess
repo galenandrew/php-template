@@ -61,6 +61,11 @@ AddOutputFilterByType DEFLATE application/x-javascript
     RewriteRule ^(.+)index.(html|php)$ $1 [R,NC,L]
     
 	#------------------------------- main rewrite to routing controller ------------------------------#
+	# Redirect async_req through index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ar/(.*)$ /index.php?async_req=1&req=$1 [NC,L]
+
 	# Redirect everything through index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

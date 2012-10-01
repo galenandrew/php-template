@@ -32,8 +32,8 @@ if(!REQ_PAGE_SUB)
 	}
 }
 
-define('REQUESTED_CONTROLLER',	CONTROLLERS.$requested_page);
-define('REQUESTED_PAGE',		PAGES.$requested_page);
+define('REQUESTED_CONTROLLER',	CONTROLLERS . $requested_page);
+define('REQUESTED_PAGE',		PAGES . $requested_page);
 
 $debug['routes'] = print_r(REQ, TRUE).print_r(REQ_PAGE_BASE, TRUE).print_r(REQ_PAGE_SUB, TRUE).print_r(REQUESTED_PAGE, TRUE).print_r(REQUESTED_CONTROLLER, TRUE);
 
@@ -70,4 +70,3 @@ if(!file_exists(REQUESTED_PAGE))
 		require(ERROR_404_PAGE);
 	}
 }
-if(ob_get_length() !== FALSE) { ob_end_flush(); }

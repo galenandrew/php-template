@@ -1,7 +1,7 @@
 	</div>
 	<!-- End Content -->
 	<footer>
-		<p>&copy; Company 2011</p>
+		<p>&copy; Company 2012</p>
 	</footer>
 </div>
 <!-- End Container -->
