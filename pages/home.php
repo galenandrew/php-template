@@ -26,7 +26,7 @@ $data = array(
 	),
 );
 
-include(TEMPLATE_PATH.'header.php');
+if(!ASYNC) include(TEMPLATE_PATH . 'header.php');
 // #################################### [BEGIN] PAGE HTML CONTENT #################################### \\
 ?>
 <div class="page-header">
@@ -38,5 +38,5 @@ include(TEMPLATE_PATH.'header.php');
 </div>
 <?php
 // #################################### [END] PAGE HTML CONTENT #################################### \\
-include(TEMPLATE_PATH.'footer.php');
+if(!ASYNC) include(TEMPLATE_PATH . 'footer.php');
 ?>
