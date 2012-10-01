@@ -14,7 +14,7 @@ class Utility {
 	}
 
 	//---> Validates form data by data type
-	public static function validate_data_by_type($data, $data_type='text') 
+	public static function validate_data_by_type($data, $data_type='text', $data_format=FALSE)
 	{
 		switch(strtolower($data_type)) {
 			default:
@@ -22,7 +22,7 @@ class Utility {
 				return strlen(stripslashes($data)) <= 2 ? FALSE:TRUE; 
 			break;
 			case 'name':
-				return (preg_match('/^[a-zA-Z \.,-]+$/', $data)
+				return (preg_match( $data_format ? $data_format : '/^[a-zA-Z \.,-]+$/', $data)
 						&& strlen(stripslashes($data)) >= 2)
 						? TRUE : FALSE; 
 			break;
@@ -66,7 +66,7 @@ class Utility {
 				return $isValid;
 			break;
 			case 'url':
-				return (preg_match('/^(https?:\/\/)?((www\.)|([a-z0-9]+\.))?([a-zA-Z0-9_%\-]*)\b(\.[a-z]{2,4})(\.[a-z]{2})?([\/a-zA-Z0-9_%\?=\.&\-#!]+)?$/', $data))
+				return (preg_match($data_format ? $data_format : '/^(https?:\/\/)?((www\.)|([a-z0-9]+\.))?([a-zA-Z0-9_%\-]*)\b(\.[a-z]{2,4})(\.[a-z]{2})?([\/a-zA-Z0-9_%\?=\.&\-#!]+)?$/', $data))
 					   ? TRUE : FALSE;
 			break;
 			case 'phone':
@@ -75,8 +75,38 @@ class Utility {
 			case 'zip':
 				return (strlen(preg_replace("[\D]",'',$data)) == 5) || (strlen(preg_replace("[\D]",'',$data)) == 10) ? TRUE : FALSE;
 			break;
+			case 'date':
+				if(preg_match($data_format ? $data_format : "/^([0-9]{1,2})(-|\/|\.)?([0-9]{1,2})(-|\/|\.)?([0-9]{4}|[0-9]{2})$/", $data, $parts)) {
+					return (checkdate($parts[1], $parts[3], $parts[5])) ? TRUE : FALSE;
+				} else { return FALSE; }
+			break;
+			case 'date2':
+				return (preg_match($data_format ? $data_format : "/^([0-9]{1,2})(-|\/|\.)([0-9]{1,2})$/", $data))
+					   ? TRUE : FALSE;
+			break;
 		}
 	}
 
+	//---> Format Phone Numbers
+	public static function format_phone($phone) {
+		switch(strlen($phone)) {
+			case 7:
+				$format = '/([0-9]{3})([0-9]{4})/';
+				$output = '$2-$3';
+			break;
+			case 10:
+				$format = '/([0-9]{3})([0-9]{3})([0-9]{4})/';
+				$output = '($1) $2-$3';
+			break;
+			case 11:
+				$format = '/([0-9]{1})([0-9]{3})([0-9]{3})([0-9]{4})/';
+				$output = '$1 ($2) $3-$4';
+			break;
+			default:
+				return FALSE;
+			break;
+		}
+		return preg_replace($format, $output, preg_replace("[\D]",'',$phone));
+	}
 }
 ?>
