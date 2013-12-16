@@ -62,12 +62,5 @@
 	 */
 	  
 	$routes = array(
-		array('/[:type=(commercial|residential)]', 'Type', 'view'),
-		array('/[:type=(commercial|residential)]/[:category]', 'Category', 'view'),
-		array('/[:type=(commercial|residential)]/[:category]/[:subcategory]', 'Subcategory', 'view'),
-		array('/compare/[:type=(commercial|residential)]', 'Type', 'compare'),
-		array('/compare/[:type=(commercial|residential)]/[:category]', 'Category', 'compare'),
-		array('/compare/[:type=(commercial|residential)]/[:category]/[:subcategory]', 'Subcategory', 'compare'),		
-		array('/products/[:category]/[:slug]', 'Product', 'view'),
-		array('/products/[:category]/[:subcategory]/[:slug]', 'Product', 'view')
+		array('/[:type=(commercial|residential)]', 'Type', 'view')
 	);
