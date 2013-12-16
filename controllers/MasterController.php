@@ -35,17 +35,5 @@
 				$this->meta['title']       = $seo[0]['titles'];
 				$this->meta['description'] = $seo[0]['description'];
 			}
-
-			if(isset($this->router->controller)) {
-				if(get_class($this->router->controller) == 'ProductController') {
-					$product = $this->router->controller->model;
-
-					if(isset($this->meta['title']))
-						$this->meta['title']       = str_replace('MODEL NUMBER', $product->name, $this->meta['title']);
-					
-					if(isset($this->meta['description']))
-						$this->meta['description'] = str_replace('MODEL NUMBER', $product->name, $this->meta['description']);
-				}
-			}
 		}
 	}

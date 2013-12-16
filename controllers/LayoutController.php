@@ -5,11 +5,6 @@
 		}
 
 		public function header($meta) {
-			$this->meta = $meta;
-			$residential = new Type('residential');
-			$commercial  = new Type('commercial');
-			$categories  = array('residential' => $residential->Categories, 'commercial' => $commercial->Categories);
-						
 			if(!ASYNC) include TEMPLATE_PATH.'header.php';
 		}
 
