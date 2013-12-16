@@ -64,12 +64,12 @@ AddOutputFilterByType DEFLATE application/x-javascript
 	# Redirect async_req through index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^ar/(.*)$ /index.php?async_req=1&req=$1 [NC,L]
+    RewriteRule ^ar/(.*)$ /index.php?async_req=1&req=$1 [NC,L,QSA]
 
 	# Redirect everything through index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /index.php?req=$1 [NC,L]
+    RewriteRule ^(.*)$ /index.php?req=$1 [NC,L,QSA]
 	#-------------------------------------------------------------------------------------------------#
 </IfModule>
 #--------------------------------------------------#

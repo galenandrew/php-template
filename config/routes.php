@@ -1,72 +1,73 @@
 <?php
-/**
- *	ROUTING CONTROLLER
- *
- *	@description 	Controlls page requests and the associated pages.
- */
-
-if(defined('DB_CONNECTED') && !DB_CONNECTED) {
-	//---> Load Page Controller
-	if(file_exists(ERROR_DB_CONTROLLER))
-		include(ERROR_DB_CONTROLLER);
-
-	//---> Load Page
-	require(ERROR_DB_PAGE);
-	exit();
-}
-
-//---> Define Requested Pages
-define('REQ_PAGE_BASE',		(strlen(REQ) > 0 && strpos(REQ, DS) !== FALSE) ? substr(REQ, 0, strpos(REQ, DS)) : 'home');
-define('REQ_PAGE_SUB',		(strlen(REQ) > 0 && strpos(substr(REQ, strpos(REQ, DS)), DS) !== FALSE) ? substr(REQ, strpos(REQ, DS)+1, -1) : FALSE);
-
-//---> No Sub Page
-if(!REQ_PAGE_SUB)
-{
-	$requested_page = REQ_PAGE_BASE.'.php';
-} else {
-	switch(REQ_PAGE_BASE) {
-		default:
-			//---> Build requested page path
-			$requested_page = REQ_PAGE_BASE.'.php';
-		break;
-	}
-}
-
-define('REQUESTED_CONTROLLER',	CONTROLLERS . $requested_page);
-define('REQUESTED_PAGE',		PAGES . $requested_page);
-
-$debug['routes'] = print_r(REQ, TRUE).print_r(REQ_PAGE_BASE, TRUE).print_r(REQ_PAGE_SUB, TRUE).print_r(REQUESTED_PAGE, TRUE).print_r(REQUESTED_CONTROLLER, TRUE);
-
-//---> Begin Output Buffering w/ GZIP Compression
-if(substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
-
-//---> Route To Page/Content
-if(!file_exists(REQUESTED_PAGE))
-{
-	//---> Load Page Controller
-	if(file_exists(ERROR_404_CONTROLLER))
-		include(ERROR_404_CONTROLLER);
-
-	//---> Load Page
-	require(ERROR_404_PAGE);
-} else { 
-	//---> Define Initial Template Data
-	$data['page'] = REQ_PAGE_BASE;
-	$meta['title'] = ucwords(REQ_PAGE_BASE);
-
-	//---> Load Page Controller
-	if(file_exists(REQUESTED_CONTROLLER))
-		include(REQUESTED_CONTROLLER);
-
-	//---> Load Page
-	if(!defined('IS_404') || !IS_404) {
-		require(REQUESTED_PAGE);
-	} else {
-		//---> Load Page Controller
-		if(file_exists(ERROR_404_CONTROLLER))
-			include(ERROR_404_CONTROLLER);
-	
-		//---> Load Page
-		require(ERROR_404_PAGE);
-	}
-}
+	/**
+	 * The routing array. Be sure to be as specific as possible,
+	 * and keep in mind that the routes will check from bottom to 
+	 * top from this array, and will stop once a match is
+	 * found.
+	 *
+	 * Routes are dynamically generated and pass named parameters
+	 * to the defined object and function.
+	 *
+	 * IN THE ARRAY:
+	 * Field 1 => GET / POST / PUT / DELETE
+	 * Field 2 => Route URL
+	 * Field 3 => Object Class
+	 * Field 4 => Object Class method
+	 *
+	 * DYNAMIC BLOCKS
+	 * Surrounded by square brackets ([]), dynamic blocks tell the
+	 * router to look for some sort of non-static match element. In
+	 * other words, dynamic blocks are what make this routing system
+	 * dynamic, DUH. Below is the list of current supported features:
+	 *
+	 * == NAMED PARAMETERS
+	 *    :param                   Sends a parameter to the proper object
+	 *                             with the given name (in this case, "param")
+	 *
+	 * == NAMED PARAMETER LIMITS
+	 *    (a):param                Only alphabetical characters allowed.
+	 *
+	 *    (i):param                Only integers (numeric characters) allowed.
+	 *
+	 *    (a_):param               Only alphabetical characters, underscores,
+	 *                             and minus signs allowed.
+	 *
+	 *    (a+):param               Only alphanumeric characters allowed.
+	 *
+	 *    (a_+):param              Only alphanumeric characters, underscores,
+	 *                             and minus signs allowed.
+	 *
+	 * == OR CONDITIONAL ASSIGNMENT
+	 *    :param=(this|that)       Will assign the matched OR CONDITIONAL
+	 *                             to the NAMED PARAMETER.
+	 *
+	 * == EXCLUSIONARY CONDITIONAL ASSIGNMENT
+	 *    :param!=this             So long as the parameter does NOT equal the
+	 *                             following statement or conditional, the route
+	 *                             will match and the match will be assigned to
+	 *                             the named parameter.
+	 *
+	 * COMING SOON:
+	 *
+	 * == OR CONDITIONAL STATEMENT (CURRENTLY NOT AVAILABLE)
+	 *    (this|that)              Will succeed if "this" or "that" is found
+	 *                             in the given route location. There is no
+	 *                             limit to the amount of statements placed
+	 *                             in this conditional. [eg, (this|that|thang)]
+	 *                             
+	 * == REGEX CONDITIONAL ASSIGNMENT (NOT DONE YET)
+	 *    :param=ex([a-z])         Will succeed if the parameter matches the
+	 *                             regex passed inside of ex(); assigns the 
+	 *                             regex match to the parameter.
+	 */
+	  
+	$routes = array(
+		array('/[:type=(commercial|residential)]', 'Type', 'view'),
+		array('/[:type=(commercial|residential)]/[:category]', 'Category', 'view'),
+		array('/[:type=(commercial|residential)]/[:category]/[:subcategory]', 'Subcategory', 'view'),
+		array('/compare/[:type=(commercial|residential)]', 'Type', 'compare'),
+		array('/compare/[:type=(commercial|residential)]/[:category]', 'Category', 'compare'),
+		array('/compare/[:type=(commercial|residential)]/[:category]/[:subcategory]', 'Subcategory', 'compare'),		
+		array('/products/[:category]/[:slug]', 'Product', 'view'),
+		array('/products/[:category]/[:subcategory]/[:slug]', 'Product', 'view')
+	);
