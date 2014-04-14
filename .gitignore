@@ -10,4 +10,4 @@ config/deploy*
 Capfile
 
 # -------------------- Files to Ignore
-blog/wp-content/uploads*
+config/db.local.php
